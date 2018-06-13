@@ -1,6 +1,14 @@
+""" in-line functions to either get a list of accessURLs or directly download
+these files into a given directory (in parallel).
+"""
+
+# so far only a hack to disable submitted threads after ctrl-c
 quit = False
 
+
 def getAccessURL(subjob, numSubjobs=0):
+    """ retrieve the accessURL of a given subjobs outputfile, if completed
+    """
     if quit:
         return
 
@@ -20,8 +28,8 @@ def accessUrlsToFile(jobnumbers, nthread=6):
     jobname.
 
     Args:
-        jobnumbers (list[int], optional): jobs to store output from
-        nthread (int): number of threads used to retreive the accessURL
+        jobnumbers (list[int]): jobs to store output from
+        nthread (int, optional): number of threads used to retreive the accessURL
     """
     from concurrent.futures import ThreadPoolExecutor, as_completed
     from os import path
@@ -53,6 +61,8 @@ def accessUrlsToFile(jobnumbers, nthread=6):
 
 
 def downloadSubjob(subjob, jobdir='', checksum=None, autoresubmit=True):
+    """ download the DIRAC output file of a given subjob
+    """
     from subprocess import check_output, CalledProcessError
     import os
 
@@ -128,7 +138,8 @@ def downloadGridToDir(jobnumbers, outputdir, nthread=6, checksum=None):
         if os.path.isdir(jdir):
             for _, _, files in os.walk(jdir):
                 if files:
-                    print('WARNING: Output directory is not empty!')
+                    print('WARNING: Output directory is not empty! Existing'
+                          ' files will be skipped.')
         else:
             os.makedirs(jdir)
 
