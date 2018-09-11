@@ -154,3 +154,25 @@ def downloadGridToDir(jobnumbers, outputdir, nthread=6, checksum=None):
                 print('job {}.{} downloaded successfully'.format(j, sj))
             else:
                 print('job {}.{} could not be downloaded'.format(j, sj))
+
+
+def merge_root_output(job, input_tree_name, merged_filepath):
+    """ Taken from LHCb starterkit
+    """
+    # Treat a job with subjobs the same as a job with no subjobs
+    jobs = j.subjobs
+    if len(jobs) == 0:
+        jobs = [job]
+
+    access_urls = []
+    for j in jobs:
+        if j.status != 'completed':
+            print 'Skipping #{0}'.format(j.id)
+            continue
+        for df in j.outputfiles.get(DiracFile):
+            access_urls.append(df.accessURL())
+
+    tchain = ROOT.TChain(input_tree_name)
+    for url in access_urls:
+        tchain.Add(url)
+    tchain.Merge(merged_filepath)
