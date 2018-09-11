@@ -160,7 +160,7 @@ def merge_root_output(job, input_tree_name, merged_filepath):
     """ Taken from LHCb starterkit
     """
     # Treat a job with subjobs the same as a job with no subjobs
-    jobs = j.subjobs
+    jobs = job.subjobs
     if len(jobs) == 0:
         jobs = [job]
 
