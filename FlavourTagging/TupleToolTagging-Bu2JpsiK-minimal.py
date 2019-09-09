@@ -13,39 +13,39 @@ from DecayTreeTuple.Configuration import *
 
 from FlavourTagging.Tunings import applyTuning
 
-tuple = DecayTreeTuple("TaggingTest")
+ntuple = DecayTreeTuple("TaggingTest")
 
 descriptor_B = "[B+ -> ^(J/psi(1S) -> ^mu+ ^mu-) ^K+]CC"
 
-tuple.Inputs = ['Dimuon/Phys/BetaSBu2JpsiKDetachedLine/Particles']
-tuple.Decay = descriptor_B
-tuple.addBranches({'Bu': descriptor_B})
-tuple.ReFitPVs = True
+ntuple.Inputs = ['Dimuon/Phys/BetaSBu2JpsiKDetachedLine/Particles']
+ntuple.Decay = descriptor_B
+ntuple.addBranches({'Bu': descriptor_B})
+ntuple.ReFitPVs = True
 
-tuple.ToolList = [
-        "TupleToolKinematic",
-        "TupleToolPropertime",
-        "TupleToolPrimaries",
-        "TupleToolPid"
-        ]
+ntuple.ToolList = [
+    "TupleToolKinematic",
+    "TupleToolPropertime",
+    "TupleToolPrimaries",
+    "TupleToolPid"
+]
 
 # Configure TupleToolTagging
-tt_tagging = tuple.addTupleTool("TupleToolTagging")
+tt_tagging = ntuple.addTupleTool("TupleToolTagging")
 tt_tagging.UseFTfromDST = False
 tt_tagging.OutputLevel = INFO
 tt_tagging.Verbose = True
 btag = tt_tagging.addTool(BTaggingTool, 'MyBTaggingTool')
-applyTuning(btag)  # apply default tuning
+applyTuning(btag, tuning_version="Summer2019Optimisation_v1_Run2")  # apply most recent tuning
+#applyTuning(btag)   # apply default tuning
 tt_tagging.TaggingToolName = btag.getFullName()
-
+tt_tagging.AddTagPartsInfo = True
 
 # DaVinci configuration
 DaVinci().TupleFile = "DTT.root"
+DaVinci().DataType = "2017"
 DaVinci().Simulation = False
-DaVinci().UserAlgorithms = [
-        tuple,
-        ]
+DaVinci().UserAlgorithms = [ ntuple ]
 
-DaVinci().EvtMax = 10000
+DaVinci().EvtMax = 10000 
 
 MessageSvc().Format = "% F%60W%S%7W%R%T %0W%M"
