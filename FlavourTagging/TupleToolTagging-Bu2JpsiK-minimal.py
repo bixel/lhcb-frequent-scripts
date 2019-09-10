@@ -46,6 +46,6 @@ DaVinci().DataType = "2017"
 DaVinci().Simulation = False
 DaVinci().UserAlgorithms = [ ntuple ]
 
-DaVinci().EvtMax = 10000 
+DaVinci().EvtMax = 10000
 
 MessageSvc().Format = "% F%60W%S%7W%R%T %0W%M"
