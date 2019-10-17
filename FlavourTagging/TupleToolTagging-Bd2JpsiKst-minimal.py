@@ -15,11 +15,11 @@ from FlavourTagging.Tunings import applyTuning
 
 ntuple = DecayTreeTuple("TaggingTest")
 
-descriptor_B = "[B+ -> ^(J/psi(1S) -> ^mu+ ^mu-) ^K+]CC"
+descriptor_B = "[B0 -> ^(J/psi(1S) -> ^mu+ ^mu-) ^(K*(892)0 -> ^K+ ^pi-)]CC"
 
-ntuple.Inputs = ['Dimuon/Phys/BetaSBu2JpsiKDetachedLine/Particles']
+ntuple.Inputs = ['Dimuon/Phys/BetaSBd2JpsiKstarDetachedLine/Particles']
 ntuple.Decay = descriptor_B
-ntuple.addBranches({'Bu': descriptor_B})
+ntuple.addBranches({'B0': descriptor_B})
 ntuple.ReFitPVs = True
 
 ntuple.ToolList = [
@@ -46,6 +46,6 @@ DaVinci().DataType = "2017"
 DaVinci().Simulation = False
 DaVinci().UserAlgorithms = [ ntuple ]
 
-DaVinci().EvtMax = 10000
+DaVinci().EvtMax = 50000 
 
 MessageSvc().Format = "% F%60W%S%7W%R%T %0W%M"
